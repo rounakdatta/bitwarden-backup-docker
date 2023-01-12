@@ -8,4 +8,4 @@ then
     exit -1
 fi
 
-sqlite3 /data/db.sqlite3 ".backup $1"
+sqlite3 /out/db.sqlite3 ".backup $1"
