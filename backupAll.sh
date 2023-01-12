@@ -13,7 +13,11 @@ while IFS='=' read -r name value ; do
     user_name=${!name}
     user_postfix=${name#"BW_USER_"}
     password_variable="BW_PASSWORD_$user_postfix"
+    clientid_variable="BW_CLIENTID_$user_postfix"
+    clientsecret_variable="BW_CLIENTSECRET_$user_postfix"
     user_password=${!password_variable}
+    user_clientid=${!clientid_variable}
+    user_clientsecret=${!clientsecret_variable}
     if [ -z "$user_password" ]
     then
       echo "corresponding password variable for '$name' is not set"
@@ -21,7 +25,7 @@ while IFS='=' read -r name value ; do
     fi
     echo "exporting entries for user '$user_name'"
     mkdir -p $WORKDIR/$user_name/attachments
-    ./exportBitwarden.sh $user_name $user_password $WORKDIR/$user_name/export-"$user_name".json $WORKDIR/$user_name/attachments
+    ./exportBitwarden.sh $user_name $user_password $user_clientid $user_clientsecret $WORKDIR/$user_name/export-"$user_name".json $WORKDIR/$user_name/attachments
   fi
 done < <(env)
 

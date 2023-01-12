@@ -1,24 +1,25 @@
 #!/bin/bash
 set -e
 
-if [ $# -ne 4 ]
+if [ $# -ne 6 ]
 then
-    echo "usage: $0 username password outputfile.json attachments_dir"
+    echo "usage: $0 username password clientid clientsecret outputfile.json attachments_dir"
     exit -1
 fi
 
-USERNAME=$1
-PASSWORD=$2
-OUTPUT_JSON=$3
-ATTACHMENTS_DIR=$4
+BW_EMAIL=$1
+BW_PW=$2
+OUTPUT_JSON=$5
+ATTACHMENTS_DIR=$6
 
-echo "starting backup for user $USERNAME"
+echo "starting backup for user $BW_EMAIL"
 
 bw config server $BITWARDEN_URL
 bw logout || echo "not logged in"
 
 export NODE_TLS_REJECT_UNAUTHORIZED=0
-export BW_SESSION=$(bw login $USERNAME $PASSWORD --raw)
+BW_CLIENTID=$3 BW_CLIENTSECRET=$4 bw login --apikey
+export BW_SESSION=$(bw unlock --raw "${BW_PW}")
 echo "Session: $BW_SESSION"
 
 bw sync

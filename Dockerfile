@@ -8,7 +8,7 @@ RUN apk add --update \
     sqlite \
     nodejs \
     bash \
-    nodejs-npm \
+    npm \
     jq \
     p7zip && \
     npm install -g @bitwarden/cli
